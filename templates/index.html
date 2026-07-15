@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block extra_style %}
+<style>
+  .hero{
+    background:var(--ink); color:var(--cream);
+    padding:90px 0 100px; position:relative; overflow:hidden;
+  }
+  .hero::before{
+    content:""; position:absolute; right:-120px; top:-120px; width:420px; height:420px;
+    border-radius:50%; border:1px solid rgba(184,134,59,0.18);
+  }
+  .hero::after{
+    content:""; position:absolute; right:-40px; top:-40px; width:420px; height:420px;
+    border-radius:50%; border:1px solid rgba(184,134,59,0.1);
+  }
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:60px; align-items:center; position:relative; z-index:2;}
+  .hero h1{font-size:3.2rem; line-height:1.08; color:var(--cream); font-weight:500;}
+  .hero h1 em{font-style:italic; color:var(--gold); font-weight:500;}
+  .hero p.lede{margin-top:20px; color:rgba(247,242,233,0.72); font-size:1.05rem; max-width:440px;}
+  .hero-actions{margin-top:34px; display:flex; gap:16px; flex-wrap:wrap;}
+
+  .plate-badge{
+    width:100%; aspect-ratio:1; max-width:400px; margin:0 auto;
+    border-radius:50%; border:1px solid rgba(184,134,59,0.35);
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .plate-badge::before{
+    content:""; position:absolute; inset:26px; border-radius:50%; border:1px dashed rgba(184,134,59,0.3);
+  }
+  .plate-inner{
+    width:70%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at 35% 30%, #F0DFC2, var(--gold) 78%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    box-shadow:0 20px 50px -18px rgba(0,0,0,0.5);
+  }
+  .plate-inner .plate-eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.68rem; letter-spacing:0.16em; color:var(--ink); opacity:0.65;}
+  .plate-inner .plate-title{font-family:'Fraunces',serif; font-size:1.5rem; color:var(--ink); margin-top:6px;}
+  .plate-inner .plate-sub{font-size:0.78rem; color:var(--ink); opacity:0.7; margin-top:4px;}
+
+  .stats-row{display:flex; gap:34px; margin-top:44px; flex-wrap:wrap;}
+  .stat-item .num{font-family:'Fraunces',serif; font-size:1.7rem; color:var(--gold);}
+  .stat-item .lbl{font-size:0.76rem; color:rgba(247,242,233,0.55); text-transform:uppercase; letter-spacing:0.08em; font-family:'IBM Plex Mono',monospace;}
+
+  .featured-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:36px;}
+  .featured-head h2{font-size:2rem;}
+  .feature-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:28px;}
+  .feature-card{padding:28px 24px 24px; text-align:left;}
+  .feature-card .thumb{
+    width:100%; aspect-ratio:4/3; border-radius:3px; margin-bottom:18px;
+    background:linear-gradient(135deg, #EFE4CC, #E1CC9B);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; color:var(--gold-deep); font-size:0.85rem; letter-spacing:0.04em;
+    border:1px solid var(--line);
+  }
+  .feature-card h3{font-size:1.15rem; margin-bottom:6px;}
+  .feature-card .desc{font-size:0.86rem; color:var(--text-muted); margin-bottom:16px; min-height:40px;}
+  .feature-card .leader-row{margin-bottom:18px;}
+
+  .howit{background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .howit-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:0; margin-top:40px; position:relative;}
+  .howit-step{text-align:center; padding:0 12px; position:relative;}
+  .howit-step .n{
+    width:46px; height:46px; border-radius:50%; border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 14px;
+    font-family:'IBM Plex Mono',monospace; color:var(--gold-deep); font-size:0.85rem; background:var(--cream);
+  }
+  .howit-step h4{font-family:'Fraunces',serif; font-size:1rem; font-weight:500; margin-bottom:6px;}
+  .howit-step p{font-size:0.82rem; color:var(--text-muted); margin:0;}
+  .howit-step:not(:last-child)::after{
+    content:"→"; position:absolute; right:-10px; top:12px; color:var(--line); font-size:1.1rem;
+  }
+
+  @media (max-width: 900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:2.4rem;}
+    .feature-grid{grid-template-columns:1fr;}
+    .howit-grid{grid-template-columns:1fr; gap:24px;}
+    .howit-step::after{display:none;}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" style="color:var(--gold);">Foodies Kitchen — Est. today, made daily</span>
+      <h1 style="margin-top:14px;">Delicious food, <em>delivered</em> with care.</h1>
+      <p class="lede">Stone-baked pizza, hand-pressed burgers and slow-simmered pasta — plated by our kitchen and on your table in under 40 minutes.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('menu') }}" class="btn btn-primary">Order now</a>
+        <a href="{{ url_for('menu') }}" class="btn btn-ghost-light" style="border:1px solid rgba(247,242,233,0.35); color:var(--cream);">View menu</a>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="num">4.8★</div><div class="lbl">Avg. rating</div></div>
+        <div class="stat-item"><div class="num">35 min</div><div class="lbl">Avg. delivery</div></div>
+        <div class="stat-item"><div class="num">12k+</div><div class="lbl">Orders served</div></div>
+      </div>
+    </div>
+    <div class="plate-badge">
+      <div class="plate-inner">
+        <span class="plate-eyebrow">TODAY'S SPECIAL</span>
+        <span class="plate-title">Margherita</span>
+        <span class="plate-sub">₹199 · stone-baked</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="featured-head">
+      <h2>Featured on the menu</h2>
+      <a href="{{ url_for('menu') }}" class="muted" style="font-size:0.9rem; border-bottom:1px solid var(--line);">See full menu →</a>
+    </div>
+    <div class="feature-grid">
+      {% for item in featured %}
+      <div class="feature-card panel">
+        <div class="thumb">{{ item.category }}</div>
+        <h3>{{ item.name }}</h3>
+        <p class="desc">{{ item.description }}</p>
+        <div class="leader-row">
+          <span class="leader-name muted" style="font-size:0.82rem;">{{ item.category }}</span>
+          <span class="leader-fill"></span>
+          <span class="leader-price">₹{{ item.price|int }}</span>
+        </div>
+        <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="POST">
+          <button type="submit" class="btn btn-outline btn-block btn-sm">Add to cart</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="howit section">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">How it works</span>
+      <h2 style="margin-top:10px; font-size:1.9rem;">From craving to doorstep</h2>
+    </div>
+    <div class="howit-grid">
+      <div class="howit-step"><div class="n">1</div><h4>Browse</h4><p>Explore the full menu</p></div>
+      <div class="howit-step"><div class="n">2</div><h4>Add to cart</h4><p>Pick your favourites</p></div>
+      <div class="howit-step"><div class="n">3</div><h4>Checkout</h4><p>Confirm address & pay</p></div>
+      <div class="howit-step"><div class="n">4</div><h4>We cook</h4><p>Freshly prepared, plated</p></div>
+      <div class="howit-step"><div class="n">5</div><h4>Delivered</h4><p>Hot, on time, to you</p></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

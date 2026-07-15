@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Edit profile{% endblock %}
+
+{% block extra_style %}
+<style>
+  .edit-wrap{max-width:480px; margin:56px auto 100px; padding:0 20px;}
+  .edit-card{padding:36px;}
+  .edit-card h1{font-size:1.5rem; margin-bottom:24px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-wrap">
+  <div class="panel card-shadow edit-card">
+    <h1>Edit profile</h1>
+    <form method="POST">
+      <div class="field">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" value="{{ user.name }}" required>
+      </div>
+      <div class="field">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" value="{{ user.phone or '' }}">
+      </div>
+      <div class="field">
+        <label for="address">Address</label>
+        <textarea id="address" name="address">{{ user.address or '' }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+      <a href="{{ url_for('profile') }}" class="field-hint" style="display:block; margin-top:14px;">← Back to profile</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

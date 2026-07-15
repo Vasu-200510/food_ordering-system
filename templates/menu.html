@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Menu{% endblock %}
+
+{% block extra_style %}
+<style>
+  .menu-head{
+    background:var(--ink); color:var(--cream); padding:56px 0 44px; text-align:center;
+  }
+  .menu-head h1{color:var(--cream); font-size:2.3rem;}
+  .menu-head p{color:rgba(247,242,233,0.65); margin-top:10px;}
+
+  .filter-bar{
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
+    margin:-26px auto 0; max-width:760px; padding:14px; background:var(--paper);
+    border:1px solid var(--line); border-radius:3px; box-shadow:var(--shadow); position:relative; z-index:5;
+  }
+  .filter-pill{
+    padding:9px 18px; border-radius:20px; font-size:0.84rem; border:1px solid var(--line);
+    color:var(--text-muted); transition:all .18s ease;
+  }
+  .filter-pill:hover{border-color:var(--gold); color:var(--ink);}
+  .filter-pill.active{background:var(--ink); color:var(--cream); border-color:var(--ink);}
+
+  .menu-list{max-width:840px; margin:64px auto 0;}
+  .menu-item{
+    display:grid; grid-template-columns:64px 1fr auto; gap:18px; align-items:center;
+    padding:20px 4px; border-bottom:1px solid var(--line);
+  }
+  .menu-item:first-child{padding-top:0;}
+  .menu-item .icon-box{
+    width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace;
+    font-size:0.62rem; color:var(--gold-deep); text-align:center; letter-spacing:0.03em;
+  }
+  .menu-item .info h3{font-size:1.15rem; margin-bottom:4px;}
+  .menu-item .info p{font-size:0.86rem; color:var(--text-muted); margin:0;}
+  .menu-item .info .leader-row{margin-top:8px; max-width:280px;}
+  .menu-item .action{display:flex; flex-direction:column; align-items:flex-end; gap:10px;}
+  .menu-item .price-tag{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--wine-deep); font-size:1.05rem;}
+
+  @media (max-width:640px){
+    .menu-item{grid-template-columns:52px 1fr; grid-template-rows:auto auto;}
+    .menu-item .action{grid-column:1/-1; flex-direction:row; justify-content:space-between; align-items:center; margin-top:10px;}
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="menu-head">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--gold);">Our menu</span>
+    <h1 style="margin-top:10px;">Made fresh, plated well</h1>
+    <p>Every dish cooked to order — filter by category to find what you're craving.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="filter-bar">
+    {% for cat in categories %}
+    <a href="{{ url_for('menu', category=cat) }}" class="filter-pill {{ 'active' if active == cat }}">{{ cat }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="menu-list">
+    {% if items %}
+      {% for item in items %}
+      <div class="menu-item">
+        <div class="icon-box">{{ item.category }}</div>
+        <div class="info">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+        <div class="action">
+          <span class="price-tag">₹{{ item.price|int }}</span>
+          <form action="{{ url_for('add_to_cart', item_id=item.id) }}" method="POST">
+            <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="center muted" style="padding:40px 0;">No items in this category yet.</p>
+    {% endif %}
+  </div>
+</div>
+<div style="height:60px;"></div>
+{% endblock %}

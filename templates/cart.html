@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Your cart{% endblock %}
+
+{% block extra_style %}
+<style>
+  .cart-wrap{max-width:640px; margin:56px auto 90px; padding:0 20px;}
+  .ticket{
+    background:var(--paper); border:1px solid var(--line); border-radius:3px; box-shadow:var(--shadow);
+    padding:36px 34px 30px; position:relative;
+  }
+  .ticket-head{text-align:center; margin-bottom:8px;}
+  .ticket-head .eyebrow{display:block; margin-bottom:6px;}
+  .ticket-head h1{font-size:1.7rem;}
+  .perf{
+    height:0; border-bottom:1.5px dashed var(--line); margin:24px -34px;
+  }
+  .cart-row{
+    display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:14px;
+    padding:16px 0; border-bottom:1px solid var(--line);
+  }
+  .cart-row:last-of-type{border-bottom:none;}
+  .cart-row .name{font-family:'Fraunces',serif; font-size:1.05rem; color:var(--ink);}
+  .cart-row .unit-price{font-size:0.8rem; color:var(--text-muted); font-family:'IBM Plex Mono',monospace;}
+  .qty-control{
+    display:flex; align-items:center; border:1px solid var(--line); border-radius:20px; overflow:hidden;
+  }
+  .qty-control button{
+    width:30px; height:30px; background:var(--cream); border:none; font-size:1rem; color:var(--ink);
+  }
+  .qty-control button:hover{background:var(--gold); color:var(--ink);}
+  .qty-control .qty-num{
+    width:32px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:0.9rem;
+  }
+  .line-total{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--wine-deep); min-width:70px; text-align:right;}
+  .remove-btn{
+    background:none; border:none; color:var(--text-muted); font-size:0.76rem; text-decoration:underline;
+    margin-top:4px; padding:0;
+  }
+  .remove-btn:hover{color:var(--wine);}
+  .totals-row{display:flex; justify-content:space-between; align-items:center; padding-top:8px;}
+  .totals-row .label{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);}
+  .totals-row .amount{font-family:'Fraunces',serif; font-size:1.6rem; color:var(--ink);}
+  .empty-cart{text-align:center; padding:50px 10px;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cart-wrap">
+  <div class="ticket">
+    <div class="ticket-head">
+      <span class="eyebrow">Order ticket</span>
+      <h1>Your cart</h1>
+    </div>
+    <div class="perf"></div>
+
+    {% if items %}
+      {% for c in items %}
+      <div class="cart-row">
+        <div>
+          <div class="name">{{ c.name }}</div>
+          <div class="unit-price">₹{{ c.price|int }} each</div>
+          <form action="{{ url_for('update_cart', cart_id=c.cart_id) }}" method="POST" style="display:inline;">
+            <input type="hidden" name="action" value="remove">
+            <button type="submit" class="remove-btn">Remove</button>
+          </form>
+        </div>
+        <div class="qty-control">
+          <form action="{{ url_for('update_cart', cart_id=c.cart_id) }}" method="POST">
+            <input type="hidden" name="action" value="decrease">
+            <button type="submit" aria-label="Decrease quantity">−</button>
+          </form>
+          <span class="qty-num">{{ c.quantity }}</span>
+          <form action="{{ url_for('update_cart', cart_id=c.cart_id) }}" method="POST">
+            <input type="hidden" name="action" value="increase">
+            <button type="submit" aria-label="Increase quantity">+</button>
+          </form>
+        </div>
+        <div class="line-total">₹{{ (c.price * c.quantity)|int }}</div>
+      </div>
+      {% endfor %}
+
+      <div class="perf"></div>
+      <div class="totals-row">
+        <span class="label">Total</span>
+        <span class="amount">₹{{ total|int }}</span>
+      </div>
+      <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-block" style="margin-top:24px;">Proceed to checkout</a>
+      <a href="{{ url_for('menu') }}" class="field-hint" style="display:block; margin-top:14px;">← Continue browsing the menu</a>
+    {% else %}
+      <div class="empty-cart">
+        <p class="muted" style="margin-bottom:20px;">Your cart is empty — nothing plated yet.</p>
+        <a href="{{ url_for('menu') }}" class="btn btn-primary">Browse the menu</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

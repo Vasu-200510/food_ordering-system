@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+
+{% block extra_style %}
+<style>
+  .checkout-wrap{max-width:980px; margin:56px auto 90px; padding:0 20px;}
+  .checkout-head{text-align:center; margin-bottom:40px;}
+  .checkout-head h1{font-size:2rem;}
+  .checkout-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:32px; align-items:start;}
+  .panel-pad{padding:32px;}
+  .section-title{font-family:'Fraunces',serif; font-size:1.15rem; margin-bottom:18px; display:flex; align-items:center; gap:10px;}
+  .section-title .idx{
+    width:26px; height:26px; border-radius:50%; border:1px solid var(--gold); color:var(--gold-deep);
+    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:0.72rem;
+  }
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:520px){.two-col{grid-template-columns:1fr;}}
+
+  .summary-card{position:sticky; top:100px;}
+  .summary-item{display:flex; justify-content:space-between; font-size:0.9rem; padding:9px 0; border-bottom:1px dotted var(--line);}
+  .summary-item .qty{color:var(--text-muted); font-family:'IBM Plex Mono',monospace; font-size:0.8rem;}
+  .summary-total{display:flex; justify-content:space-between; align-items:center; margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+  .summary-total .amount{font-family:'Fraunces',serif; font-size:1.5rem;}
+
+  @media (max-width:860px){.checkout-grid{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-wrap">
+  <div class="checkout-head">
+    <span class="eyebrow">Final step</span>
+    <h1 style="margin-top:8px;">Checkout</h1>
+  </div>
+
+  <form method="POST">
+    <div class="checkout-grid">
+      <div class="stack-16">
+        <div class="panel panel-pad">
+          <div class="section-title"><span class="idx">1</span> Delivery details</div>
+          <div class="field">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" required value="{{ user.name }}">
+          </div>
+          <div class="field">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" required placeholder="House no, street, area">{{ user.address or '' }}</textarea>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" required value="{{ user.phone or '' }}">
+            </div>
+            <div class="field">
+              <label for="pincode">Pincode</label>
+              <input type="text" id="pincode" name="pincode" required placeholder="524001">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-pad">
+          <div class="section-title"><span class="idx">2</span> Payment method</div>
+          <label class="radio-row checked">
+            <input type="radio" name="payment_method" value="Cash on Delivery" checked> Cash on delivery
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="payment_method" value="UPI / Card"> UPI / Card
+          </label>
+          <label class="radio-row">
+            <input type="radio" name="payment_method" value="Net Banking"> Net banking
+          </label>
+        </div>
+      </div>
+
+      <div class="panel panel-pad summary-card">
+        <div class="section-title" style="margin-bottom:14px;">Order summary</div>
+        {% for c in items %}
+        <div class="summary-item">
+          <span>{{ c.name }} <span class="qty">×{{ c.quantity }}</span></span>
+          <span>₹{{ (c.price * c.quantity)|int }}</span>
+        </div>
+        {% endfor %}
+        <div class="summary-total">
+          <span class="muted" style="font-size:0.85rem; text-transform:uppercase; letter-spacing:0.06em;">Total</span>
+          <span class="amount">₹{{ total|int }}</span>
+        </div>
+        <button type="submit" class="btn btn-wine btn-block" style="margin-top:22px;">Place order</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

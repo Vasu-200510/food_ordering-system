@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+
+{% block extra_style %}
+<style>
+  .auth-section{
+    min-height:calc(100vh - 300px); display:flex; align-items:center; justify-content:center;
+    padding:64px 20px; background:
+      radial-gradient(circle at 15% 20%, rgba(184,134,59,0.07), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(110,42,50,0.06), transparent 40%);
+  }
+  .auth-card{width:100%; max-width:460px; padding:44px 40px; text-align:center;}
+  .auth-card .mark-lg{
+    width:52px; height:52px; border-radius:50%; border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
+    font-family:'Fraunces',serif; color:var(--gold-deep); font-size:1.3rem;
+  }
+  .auth-card h1{font-size:1.7rem; margin-bottom:6px;}
+  .auth-card p.sub{color:var(--text-muted); font-size:0.9rem; margin-bottom:30px;}
+  .auth-card form{text-align:left;}
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:480px){.two-col{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card panel card-shadow">
+    <div class="mark-lg">F</div>
+    <h1>Create your account</h1>
+    <p class="sub">A few details and you're ready to order</p>
+    <form method="POST">
+      <div class="field">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" required placeholder="Your name">
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="98765 43210">
+        </div>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Create a password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+    <p class="field-hint">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+  </div>
+</section>
+{% endblock %}

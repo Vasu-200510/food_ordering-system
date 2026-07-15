@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Foodies{% endblock %} — Foodies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#23201C;
+    --ink-soft:#332D26;
+    --cream:#F7F2E9;
+    --paper:#FFFDF8;
+    --gold:#B8863B;
+    --gold-deep:#93692A;
+    --wine:#6E2A32;
+    --wine-deep:#571F26;
+    --sage:#57795B;
+    --text:#2A241E;
+    --text-muted:#6B6055;
+    --line:#DCD2C0;
+    --shadow: 0 12px 30px -14px rgba(35,32,28,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--ink);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--gold-deep);
+  }
+
+  /* ---------- Layout shell ---------- */
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  header.site-header{
+    background:var(--ink);
+    color:var(--cream);
+    position:sticky; top:0; z-index:50;
+    border-bottom:1px solid rgba(247,242,233,0.08);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.5rem;
+    color:var(--cream);
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .mark{
+    width:30px; height:30px; border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:0.95rem; color:var(--gold);
+  }
+  nav.main-nav{display:flex; align-items:center; gap:30px;}
+  nav.main-nav a{
+    font-size:0.92rem; color:rgba(247,242,233,0.78);
+    position:relative; padding:4px 0;
+    transition:color .2s ease;
+  }
+  nav.main-nav a:hover, nav.main-nav a.active{color:var(--cream);}
+  nav.main-nav a.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:1px; background:var(--gold);
+  }
+  .nav-actions{display:flex; align-items:center; gap:18px;}
+  .cart-link{position:relative; display:inline-flex; align-items:center; gap:6px; font-size:0.92rem;}
+  .cart-badge{
+    background:var(--gold); color:var(--ink); font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem; font-weight:600; border-radius:50%;
+    width:18px; height:18px; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .btn-ghost-light{
+    border:1px solid rgba(247,242,233,0.35); color:var(--cream);
+    padding:8px 16px; border-radius:2px; font-size:0.86rem; background:transparent;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .btn-ghost-light:hover{border-color:var(--gold); background:rgba(184,134,59,0.08);}
+
+  .hamburger{display:none; background:none; border:0; color:var(--cream);}
+
+  footer.site-footer{
+    background:var(--ink); color:rgba(247,242,233,0.65);
+    margin-top:80px; padding:48px 0 28px;
+    border-top:1px solid rgba(247,242,233,0.08);
+  }
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px;}
+  .footer-grid h4{color:var(--cream); font-family:'Fraunces',serif; font-weight:500; margin-bottom:14px; font-size:1.05rem;}
+  .footer-grid a{display:block; font-size:0.88rem; color:rgba(247,242,233,0.6); margin-bottom:8px;}
+  .footer-grid a:hover{color:var(--gold);}
+  .footer-bottom{
+    margin-top:36px; padding-top:20px; border-top:1px solid rgba(247,242,233,0.08);
+    display:flex; justify-content:space-between; font-size:0.78rem; color:rgba(247,242,233,0.4);
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px 26px; border-radius:2px; border:1px solid transparent;
+    font-size:0.88rem; font-weight:600; letter-spacing:0.02em;
+    transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn-primary{background:var(--gold); color:var(--ink);}
+  .btn-primary:hover{background:var(--gold-deep); box-shadow:var(--shadow); transform:translateY(-1px);}
+  .btn-wine{background:var(--wine); color:var(--cream);}
+  .btn-wine:hover{background:var(--wine-deep); box-shadow:var(--shadow); transform:translateY(-1px);}
+  .btn-outline{background:transparent; border:1px solid var(--ink); color:var(--ink);}
+  .btn-outline:hover{background:var(--ink); color:var(--cream);}
+  .btn-block{width:100%;}
+  .btn-sm{padding:8px 16px; font-size:0.8rem;}
+
+  /* ---------- Cards & panels ---------- */
+  .panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:3px;
+  }
+  .card-shadow{box-shadow:var(--shadow);}
+
+  /* ---------- Flash messages ---------- */
+  .flash-wrap{max-width:1180px; margin:18px auto 0; padding:0 32px;}
+  .flash{
+    padding:13px 18px; border-radius:2px; font-size:0.88rem; margin-bottom:10px;
+    border:1px solid var(--line); background:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .flash-success{border-color:var(--sage); color:#3d5540;}
+  .flash-error{border-color:var(--wine); color:var(--wine-deep);}
+
+  /* ---------- Menu leader-line rows (signature) ---------- */
+  .leader-row{
+    display:flex; align-items:baseline; gap:8px;
+  }
+  .leader-row .leader-name{white-space:nowrap;}
+  .leader-row .leader-fill{
+    flex:1; border-bottom:1.5px dotted var(--line); position:relative; top:-4px;
+  }
+  .leader-row .leader-price{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--wine-deep); white-space:nowrap;
+  }
+
+  /* ---------- Form elements ---------- */
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--text-muted); margin-bottom:7px; font-family:'IBM Plex Mono', monospace;
+  }
+  .field input, .field textarea, .field select{
+    width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:2px;
+    font-family:'Inter', sans-serif; font-size:0.94rem; background:var(--paper); color:var(--text);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{
+    border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,134,59,0.15); outline:none;
+  }
+  .field textarea{resize:vertical; min-height:110px;}
+  .field-hint{font-size:0.8rem; color:var(--text-muted); margin-top:14px; text-align:center;}
+  .field-hint a{color:var(--wine); font-weight:600;}
+
+  .radio-row{
+    display:flex; align-items:center; gap:10px; padding:12px 14px;
+    border:1px solid var(--line); border-radius:2px; margin-bottom:10px; cursor:pointer;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .radio-row:hover{border-color:var(--gold);}
+  .radio-row input{accent-color:var(--gold);}
+  .radio-row.checked{border-color:var(--gold); background:rgba(184,134,59,0.06);}
+
+  /* ---------- Utility ---------- */
+  .section{padding:64px 0;}
+  .center{text-align:center;}
+  .muted{color:var(--text-muted);}
+  .stack-8>*+*{margin-top:8px;}
+  .stack-16>*+*{margin-top:16px;}
+
+  @media (max-width: 860px){
+    nav.main-nav{
+      position:fixed; top:66px; left:0; right:0; background:var(--ink);
+      flex-direction:column; align-items:flex-start; gap:0; padding:0;
+      max-height:0; overflow:hidden; transition:max-height .25s ease;
+      border-bottom:1px solid rgba(247,242,233,0.08);
+    }
+    nav.main-nav.open{max-height:320px; padding:10px 0;}
+    nav.main-nav a{padding:12px 32px; width:100%;}
+    .hamburger{display:block;}
+    .footer-grid{grid-template-columns:1fr; gap:28px;}
+    .footer-bottom{flex-direction:column; gap:6px;}
+  }
+</style>
+{% block extra_style %}{% endblock %}
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav-row">
+    <a href="{{ url_for('index') }}" class="brand"><span class="mark">F</span>Foodies</a>
+    <nav class="main-nav" id="mainNav">
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint=='index' }}">Home</a>
+      <a href="{{ url_for('menu') }}" class="{{ 'active' if request.endpoint=='menu' }}">Menu</a>
+      <a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint=='contact' }}">Contact</a>
+      {% if current_user %}
+      <a href="{{ url_for('profile') }}" class="{{ 'active' if request.endpoint=='profile' }}">Profile</a>
+      {% endif %}
+    </nav>
+    <div class="nav-actions">
+      <a href="{{ url_for('cart') if current_user else url_for('login') }}" class="cart-link">
+        Cart {% if cart_badge %}<span class="cart-badge">{{ cart_badge }}</span>{% endif %}
+      </a>
+      {% if current_user %}
+        <a href="{{ url_for('logout') }}" class="btn-ghost-light">Log out</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="btn-ghost-light">Log in</a>
+      {% endif %}
+      <button class="hamburger" onclick="document.getElementById('mainNav').classList.toggle('open')" aria-label="Toggle menu">☰</button>
+    </div>
+  </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-wrap">
+    {% for category, message in messages %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Foodies</h4>
+        <p class="muted" style="font-size:0.88rem; max-width:280px;">A small kitchen counter, plated with care and sent to your door — every order, made to order.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="{{ url_for('menu') }}">Our menu</a>
+        <a href="{{ url_for('contact') }}">Contact us</a>
+        <a href="{{ url_for('login') }}">Sign in</a>
+      </div>
+      <div>
+        <h4>Reach us</h4>
+        <a href="mailto:hello@foodies.example">hello@foodies.example</a>
+        <a href="tel:+911234567890">+91 12345 67890</a>
+        <a href="#">12 Market Lane, Nellore</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {{ 2026 }} Foodies Kitchen</span>
+      <span>Order #12345 and counting</span>
+    </div>
+  </div>
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

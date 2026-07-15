@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+
+{% block extra_style %}
+<style>
+  .auth-section{
+    min-height:calc(100vh - 300px); display:flex; align-items:center; justify-content:center;
+    padding:64px 20px; background:
+      radial-gradient(circle at 15% 20%, rgba(184,134,59,0.07), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(110,42,50,0.06), transparent 40%);
+  }
+  .auth-card{width:100%; max-width:420px; padding:44px 40px; text-align:center;}
+  .auth-card .mark-lg{
+    width:52px; height:52px; border-radius:50%; border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 20px;
+    font-family:'Fraunces',serif; color:var(--gold-deep); font-size:1.3rem;
+  }
+  .auth-card h1{font-size:1.7rem; margin-bottom:6px;}
+  .auth-card p.sub{color:var(--text-muted); font-size:0.9rem; margin-bottom:30px;}
+  .auth-card form{text-align:left;}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card panel card-shadow">
+    <div class="mark-lg">F</div>
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to reorder your favourites</p>
+    <form method="POST">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+    </form>
+    <p class="field-hint">Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+  </div>
+</section>
+{% endblock %}

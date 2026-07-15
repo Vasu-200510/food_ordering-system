@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Order confirmed{% endblock %}
+
+{% block extra_style %}
+<style>
+  .confirm-wrap{
+    max-width:520px; margin:70px auto 100px; padding:0 20px; text-align:center;
+  }
+  .confirm-card{padding:48px 40px 40px;}
+  .stamp{
+    width:96px; height:96px; border-radius:50%; border:2px solid var(--sage);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 26px;
+    position:relative;
+  }
+  .stamp::before{
+    content:""; position:absolute; inset:-8px; border-radius:50%; border:1px dashed rgba(87,121,91,0.4);
+  }
+  .stamp svg{width:40px; height:40px;}
+  .confirm-card h1{font-size:1.8rem; margin-bottom:10px;}
+  .confirm-card p.sub{color:var(--text-muted); margin-bottom:26px;}
+  .order-id{
+    font-family:'IBM Plex Mono',monospace; font-size:0.95rem; letter-spacing:0.04em;
+    display:inline-block; padding:10px 20px; border:1px dashed var(--line); border-radius:2px;
+    color:var(--wine-deep); margin-bottom:30px;
+  }
+  .confirm-detail{display:flex; justify-content:space-between; font-size:0.88rem; padding:9px 0; border-bottom:1px dotted var(--line); text-align:left;}
+  .confirm-actions{display:flex; gap:14px; margin-top:28px; justify-content:center; flex-wrap:wrap;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-wrap">
+  <div class="panel card-shadow confirm-card">
+    <div class="stamp">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 12.5L9.5 18L20 6" stroke="#57795B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h1>Order placed!</h1>
+    <p class="sub">Thank you — your kitchen ticket has been sent. We'll have it plated and on its way shortly.</p>
+    <span class="order-id">ORDER #{{ 10000 + order.id }}</span>
+
+    <div class="stack-8" style="margin-bottom:10px;">
+      <div class="confirm-detail"><span class="muted">Deliver to</span><span>{{ order.name }}</span></div>
+      <div class="confirm-detail"><span class="muted">Payment</span><span>{{ order.payment_method }}</span></div>
+      <div class="confirm-detail"><span class="muted">Total</span><span>₹{{ order.total|int }}</span></div>
+    </div>
+
+    <div class="confirm-actions">
+      <a href="{{ url_for('profile') }}" class="btn btn-primary">Track order</a>
+      <a href="{{ url_for('index') }}" class="btn btn-outline">Back to home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
